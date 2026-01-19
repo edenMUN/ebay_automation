@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "playwright test",
+    "test:google": "playwright test src/tests/ui/curly_hair_generated.spec.ts",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
     "test:sanity": "playwright test --grep \"@sanity\"",

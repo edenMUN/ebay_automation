@@ -205,8 +205,8 @@ export class HomePage extends BasePage {
     // Extract count and total from cart text (e.g., "240.00 ₪ 2")
     const match = cartText.match(/(\d+\.\d+)\s*₪\s*(\d+)/);
     return {
-      total: match ? match[1] : '0.00',
-      count: match ? match[2] : '0'
+      total: match ? match[1] || '0.00' : '0.00',
+      count: match ? match[2] || '0' : '0'
     };
   }
 
