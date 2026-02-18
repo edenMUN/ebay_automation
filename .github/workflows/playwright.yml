@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [ main, master ]
   schedule:
-    - cron: '0 2 * * *' # Runs at 02:00 AM Israel time
+    - cron: '0 0 * * *' # Runs at 02:00 AM Israel time
   workflow_dispatch:
     inputs:
       test_type:
