@@ -25,27 +25,29 @@ export class AtidStorePage extends BasePage{
 
   async clickStorePageTwo(ai?: any) {
     await this.scrollToElement(this.storePageTwo);
-    await this.waitForElement(this.storePageTwo, 10000);
     expect(this.storePageTwo).toBeVisible();
     try {
       // first try, the regular selector
       await this.storePageTwo.click({ timeout: 5000 });
-  } catch (error) {
+      await expect(this.page).toHaveURL(/\/page\/2\/?/);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
       if (ai) {
-          console.log('Selector failed, invoking AI Healer...');
+          console.warn(`Selector for "Store Page Two" failed. Falling back to AI Healer... Error: ${errorMessage}`);
           await ai('Click on page 2 of the results');
       } else {
           throw error;
       }
-  }
-    await this.page.waitForTimeout(2000);    
-  }
+  }  }
 
   async changeOrderOfStoreResult(optionValue: string) {
     const dropdowm = this.storePageShopOrderButton
     await this.page.waitForTimeout(1000);
-    await dropdowm.selectOption(optionValue)
-    await expect(this.page).toHaveURL('https://atid.store/store/?orderby=date');    
+    await dropdowm.selectOption(optionValue);    
 }
+
+  async verifyStorePageOrderByDate(){
+    await expect(this.page).toHaveURL('https://atid.store/store/?orderby=date');
+  }
 }
 

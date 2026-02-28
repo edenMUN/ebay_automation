@@ -14,5 +14,6 @@ test('Navigate to store page and change order', async ({ atidHomePage, atidStore
     await test.step('Go to page 2 in store page and change order by date', async () => {
         await atidStorePage.clickStorePageTwo();
         await atidStorePage.changeOrderOfStoreResult('date');
+        await atidStorePage.verifyStorePageOrderByDate();
     }); 
 });
