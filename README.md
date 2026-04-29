@@ -112,7 +112,6 @@ Base test data lives in `data/data.json`. For `--env <name>`, use `data/data.<na
 ## Limitations & Assumptions
 
 - **Login-only setup (no guest fallback):** the autouse fixture attempts authenticated login and cart cleanup before each test. If login/cart setup is blocked by anti-bot or transient UI issues, the test is skipped rather than continuing as guest.
-- **Live marketplace volatility:** eBay DOM, inventory, prices, and seller states can change between runs; locator fallbacks and retries reduce but do not eliminate flakiness.
 - **Currency conversion is static:** budget checks use fixed FX rates in `utils/currency_converter.py` (deterministic by design), not live exchange-rate APIs.
 - **Locale is browser-context level:** `locale` from `data/data.json` is passed into Playwright context; site behavior may still depend on account, region, cookie, or domain routing.
 - **Allure local serve is interactive:** `python run_tests.py` starts `allure serve` (non-CI) and keeps a foreground process running until user stops it.
