@@ -214,7 +214,11 @@ python -m pytest src/tests/Test_e2e_add_to_cart.py -v --env staging -m regressio
 
 - Generate results: `python -m pytest --alluredir=allure-results`
 - Open report: `allure serve allure-results`
-- To view the interactive Allure report: Download and extract `allure-report.zip` in `test-reports` folder, then run `allure open allure-report` from your terminal.
+- To view archived interactive reports from `test-reports`:
+  1. Download one ZIP report (for example, `allure-report_success_all_items.zip` or `allure-report_cart_subtotal_exceeds.zip`).
+  2. Extract the ZIP.
+  3. Open your terminal **inside** the extracted report folder (the folder that contains `index.html`).
+  4. Run: `allure open .`
 
 ### Troubleshooting (Allure does not open)
 
