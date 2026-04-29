@@ -11,7 +11,7 @@
     "limit": 5
   },
   "budget": {
-    "per_item": 25,
+    "per_item": 35,
     "currency": "ILS"
   }
 }

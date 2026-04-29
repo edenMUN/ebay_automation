@@ -126,6 +126,16 @@ Due to eBay's strict anti-bot measures, the login flow includes a Smart Wait mec
 - Once resolved, the test continues automatically.
 - If login still fails after the Smart Wait, a full-page screenshot is attached to Allure and the test fails with a clear error.
 
+### IMPORTANT: Manual CAPTCHA Step (Highly Visible)
+
+If eBay shows a CAPTCHA/security challenge during login, automation cannot solve it for you.
+
+1. Run in headed mode: `python run_tests.py --browser chromium --headed`
+2. Keep the browser window open and watch the login screen.
+3. If CAPTCHA appears, solve it manually in the browser within the wait window.
+4. After successful solve, do not close the browser; the test resumes automatically.
+5. If CAPTCHA is not solved in time, the test fails and attaches evidence to Allure.
+
 To support this, always run tests in headed mode (`--headed`) during local demonstrations.
 
 ## Run Commands
