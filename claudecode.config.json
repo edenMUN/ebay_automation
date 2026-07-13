@@ -1,0 +1,22 @@
+{
+  "_meta": {
+    "project": "N-ebay_task",
+    "purpose": "Custom Claude Code slash commands for Playwright test failure triage and locator healing.",
+    "skills_dir": ".cursor/skills",
+    "note": "conftest.py clears results/ and allure-results/ at the start of each pytest session — triage existing artifacts before re-running tests."
+  },
+  "commands": {
+    "triage": {
+      "description": "Classify the latest test failure from Allure, screenshots, and traces (no code changes)",
+      "prompt": "Act as the failure-triage-agent. Read `.cursor/skills/failure-triage-agent/SKILL.md` and `.cursor/skills/failure-triage-agent/examples.md`.\n\nIMPORTANT — artifact order:\n1. If `allure-results/` or `results/` already contain files from a failed run, analyze those FIRST. Do NOT run pytest yet — a new session deletes both folders.\n2. Collect evidence in order: terminal output (if provided), Allure `*-result.json` (failed/broken), `results/<test_name>_failure.png`, optional `results/<test_name>_trace.zip` (only if the run used `--trace-on`).\n3. If folders are empty or stale, ask the user for a traceback OR run once with:\n   `python run_tests.py --browser chromium --headed --trace-on`\n\nFollow the triage checklist: identify failing step → classify (ANTI-BOT, SETUP SKIP, LOCATOR TIMEOUT, DATA/CURRENCY, etc.) → route to the owning skill or file.\n\nOutput the **Failure triage summary** format from SKILL.md. Do not patch code during triage unless the user explicitly asks to proceed with a fix."
+    },
+    "heal": {
+      "description": "Run headed tests and fix broken eBay locators only (after locator-related triage)",
+      "prompt": "Act as the ebay-locator-healer. Read `.cursor/skills/ebay-locator-healer/SKILL.md` and `.cursor/skills/ebay-locator-healer/examples.md`.\n\nBefore editing any file:\n1. If failure category is unknown, triage first using `.cursor/skills/failure-triage-agent/SKILL.md`.\n2. Proceed ONLY for LOCATOR TIMEOUT or locator-related AutomationStepError. Stop and report if the failure is ANTI-BOT/CAPTCHA, SETUP SKIP, DATA/CURRENCY, or PRICE PARSE — those are not locator heals.\n\nRun tests headed (eBay login/captcha often requires a visible browser):\n`python run_tests.py --browser chromium --headed`\n\nOn failure, follow the Healing Workflow checklist: extract the exact locator from the call log → reproduce with Playwright MCP (read tool schemas first; match `data/data.json` locale) → patch ONLY that one locator line in `src/pages/` → no fallbacks, no unrelated edits.\n\nVerify with the same headed command. Do not modify `src/tests/`, `conftest.py`, test data, or budget/currency logic."
+    },
+    "triage-and-heal": {
+      "description": "Triage a failure, then auto-heal only if it is a locator timeout",
+      "prompt": "Run a two-phase workflow for this Playwright project.\n\n**Phase 1 — Triage:** Act as failure-triage-agent. Read `.cursor/skills/failure-triage-agent/SKILL.md`. Prefer existing artifacts in `allure-results/` and `results/`; only run `python run_tests.py --browser chromium --headed --trace-on` if no failure evidence exists. Produce the Failure triage summary.\n\n**Phase 2 — Heal (conditional):** If and only if the primary category is LOCATOR TIMEOUT (or locator-related AutomationStepError), switch to ebay-locator-healer per `.cursor/skills/ebay-locator-healer/SKILL.md` and apply a single-locator fix. Otherwise stop after triage with the recommended next step (headed captcha, data.json, currency_converter, etc.).\n\nVerify locator fixes with `python run_tests.py --browser chromium --headed`."
+    }
+  }
+}
