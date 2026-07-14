@@ -20,6 +20,19 @@
           }
         ]
       }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/type_check.py\"",
+            "timeout": 130,
+            "statusMessage": "Type checking"
+          }
+        ]
+      }
     ]
   }
 }

@@ -55,3 +55,6 @@ coverage/
 
 # Local test data overrides and artifacts
 data/local*.json
+
+# Type-check hook baseline cache
+.claude/hooks/.pyright_baseline.json
