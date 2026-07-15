@@ -106,7 +106,10 @@ def pages(traced_page: Page):
 def clear_cart_before_each_test(pages, base_url, test_data):  # type: ignore[no-untyped-def]
     # CI (e.g. GitHub Actions) sets CI=true; skip login + cart cleanup there —
     # eBay captcha blocks automated sign-in, and clear_cart needs a loaded session.
+    # Still open the eBay home page so the search flow starts on a loaded page
+    # rather than about:blank (the login step normally performs this navigation).
     if os.getenv("CI"):
+        pages["search"].goto(base_url)
         return
 
     login_page = pages["login"]
