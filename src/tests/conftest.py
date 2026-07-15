@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 import shutil
 from typing import Dict, Generator
 
@@ -103,6 +104,11 @@ def pages(traced_page: Page):
 
 @pytest.fixture(autouse=True)
 def clear_cart_before_each_test(pages, base_url, test_data):  # type: ignore[no-untyped-def]
+    # CI (e.g. GitHub Actions) sets CI=true; skip login + cart cleanup there —
+    # eBay captcha blocks automated sign-in, and clear_cart needs a loaded session.
+    if os.getenv("CI"):
+        return
+
     login_page = pages["login"]
     cart_page = pages["cart"]
 
